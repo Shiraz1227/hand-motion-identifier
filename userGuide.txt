@@ -1,0 +1,3 @@
+This is used to document my thought process during key moments alongside explanation of concepts to help me understand it better alongside others who want to know how it works.
+
+The

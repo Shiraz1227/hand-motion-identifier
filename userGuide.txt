@@ -1,3 +1,34 @@
 This is used to document my thought process during key moments alongside explanation of concepts to help me understand it better alongside others who want to know how it works.
 
-The
+The arduino lessons for this comes from video 77 onwards on Paul Mcwhorter's course "All New R4 WiFi Lessons for Absolute Beginners". The main difficulty I have been facing at
+the start of my project is soldering the pins to the MPU6050 - which I later learned it was due to a poor soldering machine. However, after some desoldering, I managed to 
+get the connections on the MPU6050 (somewhat accidentally). The video tutorial for this had much less noisy data however the data presented right now does give the right 
+numbers theoretically - for example the z-axis experiencing roughly 1g of acceleration. 
+
+
+How does the MPU6050 work? 
+
+(1) Acceleration
+The MPU6050 uses a proof mass to determine acceleration in all 3 axes. Looking at the z-axis example, as you move the MPU6050 chip physically upwards, due to inertia, the proof
+mass consequently would result in a opposite downward force (for example, if you were to accelerate in a car, due to inertia as the car speeds off into one direction, you 
+exert an opposite force towards the car seat). The proof mass is attached to this MPU6050 chip with springs. We can measure the initial distance between the bottom surface of
+this proof mass and the surface of the MPU6050 chip as d0. So, as the chip moves upwards, the weight of the proof mass results in inertia and causes the springs to compress. 
+Using Newton's third law, the force of the compression in the string must equal the force of the upwards moving proof mass. So, we can use F = ma from the chip and Hooke's law
+F = kx from the springs and conclude ma = -kx (taking upwards as positive). Isolating a, we get a = -k/m * x. We know the mass of the proof mass and the spring constant of 
+the spring from constants, but we don't know the distance the proof mass/top of the spring has travelled/compressed to. Lets call this new distance (after compression) between
+the proof mass and the chip after acceleration d1. x = d1 - d0. We know what d0 is (as the proof mass has been manufactured a certain distance above the chip). Now, we find
+what d1 is. Using electricity, we know that capacitance (C) = epsilon (permittivity) * surface area of the plate (A) / distance between the plates. Epsilon (E) and surface area of the 
+plate are constants. So rearranging, we have d1 = E * A / C. To find the capacitance, we can apply a voltage across the 2 plates (the internal chip does this high and low in 
+microseconds). This results in electrons going towards the positive terminal (hence an absense of electrons on one side) and electrons being repelled by the negative terminal
+and piling up on the other side. This causes an accumulation of across the gap and the definition of capacitance is how much electrical charge per unit of voltage applied. 
+Hence, using further physics we are able to measure this capacitance. As a result, we know d1 and hence we can find out acceleration with a formula all contained with 
+constants by replacing x in a = -k/m * x (formula is in folder). The MPU6050 has an internal chip which completes these calculations. 
+
+Now, to measure acceleration in the other
+axes, imagine a square. Left to right is x-axis and up to down is y-axis. From these sides of this square, there are hundreds of springs suspended left to right and up to down
+to some other conductive plates. Using the same logic as the z-axis, say we move the proof mass to the left, inertia results in the proof mass moving right which means that
+the distance between the 2 plates get closer which can be used to measure capacitance and thus used to measure acceleration in that direction. Instead of having these proof 
+masses constantly moving around, modern accelerometers use a closed loop system. This uses a voltage which, when applied produces an electrostatic force which pushes the
+plates closer or further to each other (depending on the direction). So, say the proof mass has moved a bit to measure the change in acceleration, there is an internal 
+feedback circuit which recognises the displacement, causing a change in voltage to occur which results in the proof mass returning to its original position. 
+

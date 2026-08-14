@@ -11,3 +11,7 @@ while True:
         serialString = rawBytes.decode("utf-8",errors="ignore")
         serialString.strip()
         serialStringArray = serialString.split(",")
+        Ax = serialStringArray[0]
+        Ay = serialStringArray[1]
+        Az = serialStringArray[2]
+        print(f"Acceleration x: {Ax}. Acceleration y: {Ay}. Acceleration z: {Az}")

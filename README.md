@@ -1,3 +1,3 @@
-This project builds up to a drone I hope to build. Attached to my hand/wrist will be an MPU6050 which will detect movements of my hand. Firstly, it will be run from the Arduino
-IDE which takes the signals from the processor. It will then send the signals from the arduino to a python file via pyserial to which a Kalman filter will then be applied. Then,
-it will undergo classification from deterministic rules and finally, I will develop an approriate machine learning technique (comparing it from libraries such as Pytorch) and see how much better it performs compared to the deterministic, strict rules. 
+This is a sub-project within a drone I hope to build. I am prioritising this to showcase filtering techniques of noisy data alongside potential machine learning techniques
+rather than starting on the robotics side. My idea is to have a device on my wrist and as that moves, a drone above moves in exact synchronisation. This will also portray 
+processing real-time data (which is also involved in the ultrasonic sensor). 

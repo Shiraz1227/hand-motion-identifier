@@ -4,6 +4,9 @@
 float Ax;
 float Ay;
 float Az;
+unsigned long AccCurrentTime;
+unsigned long AccPreviousTime = 0;
+int AccDelayTime = 100;
 
 Adafruit_MPU6050 mpu;
 void setup() {
@@ -21,20 +24,13 @@ void loop() {
   Ax = a.acceleration.x;
   Ay = a.acceleration.y;
   Az = a.acceleration.z;
-
-  Serial.print("Accx:"); //Only one word before the colon allowed in serial plotter
-  Serial.print(Ax);
-  Serial.print(",");
-  Serial.print("Accy:");
-  Serial.print(Ay);
-  Serial.print(",");
-  Serial.print("Accz:");
-  Serial.print(Az);
-  Serial.print(",");
-  Serial.print("UL:");
-  Serial.print(1);
-  Serial.print(",");
-  Serial.print("LL:");
-  Serial.println("-1");
-  delay(100);
+  AccCurrentTime = millis();
+  if (AccCurrentTime - AccPreviousTime > AccDelayTime) {
+    Serial.print(Ax);
+    Serial.print(",");
+    Serial.print(Ay);
+    Serial.print(",");
+    Serial.println(Az);
+    AccPreviousTime = AccCurrentTime;
+  }
 }

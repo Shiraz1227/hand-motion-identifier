@@ -32,3 +32,14 @@ masses constantly moving around, modern accelerometers use a closed loop system.
 plates closer or further to each other (depending on the direction). So, say the proof mass has moved a bit to measure the change in acceleration, there is an internal 
 feedback circuit which recognises the displacement, causing a change in voltage to occur which results in the proof mass returning to its original position. 
 
+(2) Gyroscope
+
+Problems
+
+1. There is quite a bit of noise but generally correct data coming from the accelerometer. 
+
+Solutions
+
+1. This might not be as much as a problem as I anticipated. This is because it doesn't have to [talk about how only changes are needed and accuracy is actually needed in the 
+drone itself mainly. Works well currently can't afford soldering]
+

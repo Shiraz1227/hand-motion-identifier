@@ -1,3 +1,4 @@
 This is a sub-project within a drone I hope to build. I am prioritising this to showcase filtering techniques of noisy data alongside potential machine learning techniques
-rather than starting on the robotics side. My idea is to have a device on my wrist and as that moves, a drone above moves in exact synchronisation. This will also portray 
-processing real-time data (which is also involved in the ultrasonic sensor). 
+rather than starting on the robotics side. My idea is to have a device on my wrist and as that moves, a drone above moves in exact synchronisation. Currently though, I would 
+require an Arduino NANO (or a smaller Arduino equivalent/PCB) for wrist control. Another reason as to why this project before the building of the drone is simply because I am 
+a student who currently can't afford a decent soldering kit and drone pieces. Therefore, readings will come from movements of the breadboard. 

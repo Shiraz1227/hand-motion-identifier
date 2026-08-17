@@ -4,6 +4,14 @@
 float Ax;
 float Ay;
 float Az;
+float cAx;
+float cAy;
+float cAz;
+float pitchRAW;
+float rollRAW;
+float pitch = 0.0;
+float roll = 0.0;
+float confidenceFactor = 0.05;
 unsigned long AccCurrentTime;
 unsigned long AccPreviousTime = 0;
 int AccDelayTime = 100;
@@ -23,6 +31,64 @@ float calibration(float someAcc,float maxReading, float minReading) { //Arduino 
   return scaleError * (someAcc - offsetError);
 }
 
+void accelerationPrinter(String someLetter) {
+  if (someLetter == "c") {
+    Serial.print("cAx:");
+    Serial.print(cAx);
+    Serial.print(",");
+    Serial.print("cAy:");
+    Serial.print(cAy);
+    Serial.print(",");
+    Serial.print("cAz:");
+    Serial.print(cAz);
+    Serial.print(",");
+  }
+  else if (someLetter == "r") {
+    Serial.print("Ax:");
+    Serial.print(Ax);
+    Serial.print(",");
+    Serial.print("Ay:");
+    Serial.print(Ay);
+    Serial.print(",");
+    Serial.print("Az:");
+    Serial.print(Az);
+    Serial.print(",");
+  }
+}
+
+void pitchAndRollPrinter(String someLetter) {
+  if (someLetter == "f") {
+    Serial.print("Pitch:");
+    Serial.print(pitch);
+    Serial.print(",");
+    Serial.print("Roll:");
+    Serial.print(roll);
+    Serial.print(",");
+  }
+  else if (someLetter == "r") {
+    Serial.print("PitchRAW:");
+    Serial.print(pitchRAW);
+    Serial.print(",");
+    Serial.print("RollRAW:");
+    Serial.print(rollRAW);
+    Serial.print(",");
+  }
+}
+
+void boundaryPrinter() {
+    Serial.print("UL:");
+    Serial.print(90);
+    Serial.print(",");
+    Serial.print("LL:");
+    Serial.print(-90);
+    Serial.print(",");
+    Serial.println(".");
+}
+
+void pySerialPrinter() {
+  Serial.print("Stuff still needs to be added to this function!!!");
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
   sensors_event_t a, g, temp;
@@ -30,22 +96,19 @@ void loop() {
   Ax = a.acceleration.x; 
   Ay = a.acceleration.y;
   Az = a.acceleration.z;
-  float cAx = calibration(Ax,10.2,-9.36);
-  float cAy = calibration(Ay,9.50,-10.07);
-  float cAz = calibration(Az,10.0,-10.0);
-  float pitch = asin(cAy / 9.81) * (180.0 / PI);
-  float roll = asin(cAx / 9.81) * (180.0 / PI);
+  cAx = calibration(Ax,10.2,-9.36) / 9.81;
+  cAy = calibration(Ay,9.50,-10.07) / 9.81;
+  cAz = calibration(Az,10.0,-10.0) / 9.81;
+  pitchRAW = atan2(cAy,sqrt((cAz * cAz) + (cAx * cAx))) * (180.0 / PI);
+  rollRAW = atan2(cAx,sqrt((cAz * cAz) + (cAy * cAy))) * (180.0 / PI);
+  pitch = ((1.0 - confidenceFactor) * pitch) + (confidenceFactor * pitchRAW);
+  roll = ((1.0 - confidenceFactor) * roll) + (confidenceFactor * rollRAW);
   AccCurrentTime = millis();
   if (AccCurrentTime - AccPreviousTime > AccDelayTime) {
-    Serial.print(cAx);
-    Serial.print(",");
-    Serial.print(cAy);
-    Serial.print(",");
-    Serial.print(cAz);
-    Serial.print(",");
-    Serial.print(pitch);
-    Serial.print(",");
-    Serial.println(roll);
+    accelerationPrinter("c");
+    pitchAndRollPrinter("f");
+    pitchAndRollPrinter("r");
+    boundaryPrinter();
     AccPreviousTime = AccCurrentTime;
   }
 }
